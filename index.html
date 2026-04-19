@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Turbo Tech AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@400;600&family=Exo+2:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg-start: #4898ab;
+      --bg-end: #90d46c;
+      --text-gradient: linear-gradient(45deg, #8114b0, #ff4291, #f7ff3c);
+      --card-bg: rgba(255,255,255,0.1);
+      --card-border: rgba(255,255,255,0.2);
+      --glow: #ff4291;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Exo 2', sans-serif;
+      background: linear-gradient(90deg, var(--bg-start), var(--bg-end));
+      min-height: 100vh;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 20%, rgba(129,20,176,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 80%, rgba(255,66,145,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 50%, rgba(247,255,60,0.06) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .g-text {
+      background: var(--text-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(18px);
+      background: rgba(72,152,171,0.35);
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+      padding: 0 6%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+    }
+
+    .nav-logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 900;
+      background: var(--text-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 2px;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--text-gradient);
+      transition: width 0.3s;
+    }
+
+    .nav-links a:hover::after { width: 100%; }
+
+    .hero {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 90px 6% 70px;
+      overflow: hidden;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 50px;
+      padding: 6px 18px;
+      font-size: 0.78rem;
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 22px;
+      backdrop-filter: blur(8px);
+    }
+
+    .hero h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2.4rem, 7vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: 4px;
+      background: var(--text-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: none;
+      margin-bottom: 18px;
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.8);
+      max-width: 520px;
+      margin: 0 auto 36px;
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      background: linear-gradient(135deg, #8114b0, #ff4291);
+      border-radius: 50px;
+      color: #fff;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 1.5px;
+      text-decoration: none;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 24px rgba(255,66,145,0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(255,66,145,0.55);
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 30px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 50px;
+      color: #fff;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 1.5px;
+      text-decoration: none;
+      text-transform: uppercase;
+      border: 1.5px solid rgba(255,255,255,0.35);
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .btn-outline:hover {
+      transform: translateY(-3px);
+      background: rgba(255,255,255,0.15);
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.25;
+      pointer-events: none;
+      animation: drift 8s ease-in-out infinite alternate;
+    }
+
+    .orb-1 { width: 350px; height: 350px; background: #8114b0; top: -80px; left: -100px; animation-delay: 0s; }
+    .orb-2 { width: 250px; height: 250px; background: #ff4291; bottom: 0; right: -80px; animation-delay: 3s; }
+    .orb-3 { width: 180px; height: 180px; background: #f7ff3c; top: 50%; left: 60%; animation-delay: 1.5s; }
+
+    @keyframes drift {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(30px, 20px) scale(1.08); }
+    }
+
+    .stats-bar {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: wrap;
+      margin: 0 6% 60px;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .stat-item {
+      flex: 1;
+      min-width: 130px;
+      padding: 28px 20px;
+      text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .stat-item:last-child { border-right: none; }
+
+    .stat-num {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: var(--text-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+      margin-top: 4px;
+      font-family: 'Rajdhani', sans-serif;
+    }
+
+    section {
+      position: relative;
+      z-index: 1;
+      padding: 60px 6%;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 700;
+      background: var(--text-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title .icon {
+      font-size: 1.6rem;
+      -webkit-text-fill-color: initial;
+      filter: drop-shadow(0 0 8px rgba(255,66,145,0.6));
+    }
+
+    .see-all-btn {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.25);
+      padding: 8px 20px;
+      border-radius: 50px;
+      transition: all 0.2s;
+      text-transform: uppercase;
+    }
+
+    .see-all-btn:hover {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .video-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .video-card:hover {
+      transform: translateY(-6px) scale(1.01);
+      box-shadow: 0 16px 48px rgba(129,20,176,0.3);
+      border-color: rgba(255,66,145,0.5);
+    }
+
+    .thumb-wrap {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+      overflow: hidden;
+      background: rgba(0,0,0,0.2);
+    }
+
+    .thumb-wrap img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.35s;
+    }
+
+    .video-card:hover .thumb-wrap img { transform: scale(1.06); }
+
+    .play-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.2);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    .video-card:hover .play-overlay { opacity: 1; }
+
+    .play-btn {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #8114b0, #ff4291);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(255,66,145,0.6);
+    }
+
+    .play-btn svg { width: 22px; height: 22px; fill: #fff; margin-left: 3px; }
+
+    .video-info { padding: 14px 16px 16px; }
+
+    .video-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      font-size: 0.98rem;
+      color: rgba(255,255,255,0.92);
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .video-meta {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.5);
+      font-family: 'Exo 2', sans-serif;
+    }
+
+    .shorts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 20px;
+    }
+
+    .short-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.25s, box-shadow 0.25s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .short-card:hover {
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 16px 40px rgba(247,255,60,0.2);
+    }
+
+    .short-thumb-wrap {
+      position: relative;
+      width: 100%;
+      padding-top: 177.77%;
+      overflow: hidden;
+      background: rgba(0,0,0,0.2);
+    }
+
+    .short-thumb-wrap img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.35s;
+    }
+
+    .short-card:hover .short-thumb-wrap img { transform: scale(1.08); }
+
+    .shorts-badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: linear-gradient(135deg, #ff4291, #f7ff3c);
+      color: #1a0033;
+      font-size: 0.65rem;
+      font-weight: 800;
+      font-family: 'Orbitron', sans-serif;
+      padding: 3px 9px;
+      border-radius: 50px;
+      letter-spacing: 1px;
+    }
+
+    .short-title {
+      padding: 10px 12px 12px;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.88);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      line-height: 1.3;
+    }
+
+    .social-section {
+      padding: 50px 6% 70px;
+      text-align: center;
+    }
+
+    .social-grid {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 36px;
+    }
+
+    .social-card {
+      background: rgba(255,255,255,0.09);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 20px;
+      padding: 28px 36px;
+      text-decoration: none;
+      color: #fff;
+      transition: transform 0.25s, box-shadow 0.25s;
+      min-width: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .social-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 48px rgba(255,66,145,0.3);
+    }
+
+    .social-icon {
+      width: 52px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .social-icon svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .social-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      background: var(--text-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .social-handle {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.65);
+    }
+
+    .loading-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      padding: 60px 0;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 3px solid rgba(255,255,255,0.15);
+      border-top-color: #ff4291;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 36px 6%;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.45);
+      font-family: 'Rajdhani', sans-serif;
+      letter-spacing: 1px;
+    }
+
+    footer span {
+      background: var(--text-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .stat-item { min-width: 100px; padding: 20px 12px; }
+      .stat-num { font-size: 1.3rem; }
+      .hero { padding: 60px 5% 50px; }
+      .video-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+      .shorts-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 14px; }
+    }
+
+    .error-msg {
+      text-align: center;
+      padding: 40px 20px;
+      color: rgba(255,255,255,0.6);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a href="#" class="nav-logo">⚡ TURBO TECH AI</a>
+  <ul class="nav-links">
+    <li><a href="#videos">Videos</a></li>
+    <li><a href="#shorts">Shorts</a></li>
+    <li><a href="#social">Connect</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="hero-badge">🚀 YouTube Channel</div>
+  <h1>TURBO TECH AI</h1>
+  <p class="hero-sub">Your destination for cutting-edge AI tutorials, tech deep-dives, and the future of technology — all delivered at turbo speed.</p>
+  <div class="hero-btns">
+    <a href="https://www.youtube.com/@TurboTechAI-1?sub_confirmation=1" target="_blank" class="btn-primary">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="white"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+      Subscribe Now
+    </a>
+    <a href="https://www.youtube.com/@TurboTechAI-1" target="_blank" class="btn-outline">
+      🎬 View Channel
+    </a>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar reveal">
+  <div class="stat-item">
+    <div class="stat-num" id="stat-videos">—</div>
+    <div class="stat-label">Videos</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" id="stat-subs">—</div>
+    <div class="stat-label">Subscribers</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" id="stat-views">—</div>
+    <div class="stat-label">Total Views</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">3</div>
+    <div class="stat-label">Socials</div>
+  </div>
+</div>
+
+<!-- VIDEOS SECTION -->
+<section id="videos">
+  <div class="section-header reveal">
+    <div class="section-title">
+      <span class="icon">🎬</span>
+      Latest Videos
+    </div>
+    <a href="https://www.youtube.com/@TurboTechAI-1/videos" target="_blank" class="see-all-btn">See All →</a>
+  </div>
+  <div class="video-grid reveal" id="video-grid">
+    <div class="loading-state" style="grid-column:1/-1">
+      <div class="spinner"></div>
+      <p>Videos load ho rahe hain…</p>
+    </div>
+  </div>
+</section>
+
+<!-- SHORTS SECTION -->
+<section id="shorts">
+  <div class="section-header reveal">
+    <div class="section-title">
+      <span class="icon">⚡</span>
+      Shorts
+    </div>
+    <a href="https://www.youtube.com/@TurboTechAI-1/shorts" target="_blank" class="see-all-btn">See All →</a>
+  </div>
+  <div class="shorts-grid reveal" id="shorts-grid">
+    <div class="loading-state" style="grid-column:1/-1">
+      <div class="spinner"></div>
+      <p>Shorts load ho rahe hain…</p>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL SECTION -->
+<section class="social-section" id="social">
+  <div class="reveal">
+    <div class="section-title" style="justify-content:center;margin-bottom:8px;">
+      <span class="icon">🌐</span>
+      Connect With Me
+    </div>
+    <p style="color:rgba(255,255,255,0.6);font-size:0.9rem;margin-top:6px;">Follow me across platforms for more content</p>
+  </div>
+  <div class="social-grid">
+
+    <!-- YouTube Card -->
+    <a href="https://www.youtube.com/@TurboTechAI-1" target="_blank" class="social-card reveal">
+      <div class="social-icon">
+        <!-- Official YouTube logo SVG -->
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <rect width="48" height="48" rx="10" fill="#FF0000"/>
+          <path d="M38.5 17.2c-.4-1.4-1.5-2.5-2.9-2.9C33.1 13.7 24 13.7 24 13.7s-9.1 0-11.6.6c-1.4.4-2.5 1.5-2.9 2.9C9 19.7 9 24 9 24s0 4.3.5 6.8c.4 1.4 1.5 2.5 2.9 2.9 2.5.6 11.6.6 11.6.6s9.1 0 11.6-.6c1.4-.4 2.5-1.5 2.9-2.9.5-2.5.5-6.8.5-6.8s0-4.3-.5-6.8z" fill="white"/>
+          <polygon points="21,29 29,24 21,19" fill="#FF0000"/>
+        </svg>
+      </div>
+      <div class="social-name">YouTube</div>
+      <div class="social-handle">@TurboTechAI-1</div>
+    </a>
+
+    <!-- Instagram Card 1 -->
+    <a href="https://instagram.com/dhanpushkar" target="_blank" class="social-card reveal">
+      <div class="social-icon">
+        <!-- Official Instagram logo SVG with gradient -->
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="ig-grad1" cx="30%" cy="107%" r="150%">
+              <stop offset="0%" stop-color="#fdf497"/>
+              <stop offset="5%" stop-color="#fdf497"/>
+              <stop offset="45%" stop-color="#fd5949"/>
+              <stop offset="60%" stop-color="#d6249f"/>
+              <stop offset="90%" stop-color="#285AEB"/>
+            </radialGradient>
+          </defs>
+          <rect width="48" height="48" rx="10" fill="url(#ig-grad1)"/>
+          <rect x="12" y="12" width="24" height="24" rx="7" stroke="white" stroke-width="2.5" fill="none"/>
+          <circle cx="24" cy="24" r="6" stroke="white" stroke-width="2.5" fill="none"/>
+          <circle cx="33" cy="15" r="1.8" fill="white"/>
+        </svg>
+      </div>
+      <div class="social-name">Instagram</div>
+      <div class="social-handle">@dhanpushkar</div>
+    </a>
+
+    <!-- Instagram Card 2 -->
+    <a href="https://instagram.com/dhanpushkar9" target="_blank" class="social-card reveal">
+      <div class="social-icon">
+        <!-- Official Instagram logo SVG with gradient (unique gradient id) -->
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="ig-grad2" cx="30%" cy="107%" r="150%">
+              <stop offset="0%" stop-color="#fdf497"/>
+              <stop offset="5%" stop-color="#fdf497"/>
+              <stop offset="45%" stop-color="#fd5949"/>
+              <stop offset="60%" stop-color="#d6249f"/>
+              <stop offset="90%" stop-color="#285AEB"/>
+            </radialGradient>
+          </defs>
+          <rect width="48" height="48" rx="10" fill="url(#ig-grad2)"/>
+          <rect x="12" y="12" width="24" height="24" rx="7" stroke="white" stroke-width="2.5" fill="none"/>
+          <circle cx="24" cy="24" r="6" stroke="white" stroke-width="2.5" fill="none"/>
+          <circle cx="33" cy="15" r="1.8" fill="white"/>
+        </svg>
+      </div>
+      <div class="social-name">Instagram</div>
+      <div class="social-handle">@dhanpushkar9</div>
+    </a>
+
+    <!-- Email Card -->
+    <a href="mailto:keshavsinghrajput23555@gmail.com" class="social-card reveal">
+      <div class="social-icon">
+        <!-- Gmail-style Email SVG logo -->
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <rect width="48" height="48" rx="10" fill="#EA4335"/>
+          <path d="M8 14h32v20a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2V14z" fill="white"/>
+          <path d="M8 14l16 13L40 14" stroke="#EA4335" stroke-width="2.5" fill="none"/>
+          <path d="M8 14l16 13L40 14" stroke="#EA4335" stroke-width="2" fill="none"/>
+          <!-- Gmail M shape -->
+          <path d="M8 14v20l10-10M40 14v20L30 24" stroke="white" stroke-width="1.5" fill="none" opacity="0.3"/>
+        </svg>
+      </div>
+      <div class="social-name">Email</div>
+      <div class="social-handle">keshavsinghrajput<br>23555@gmail.com</div>
+    </a>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 <span>Turbo Tech AI</span> · All Rights Reserved · Made with ⚡ passion</p>
+</footer>
+
+<script>
+  /* ══════════════════════════════════════════
+     HARDCODED CONFIG
+     ══════════════════════════════════════════ */
+  const YT_API_KEY = 'AIzaSyBBVfUgwElsHKADI_3dAZhl2seJbDv0CF4';
+  const CHANNEL_ID = 'UCnyQCVSrtcTIAxBk4lFgqiQ';
+
+  /* ── SCROLL REVEAL ── */
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  revealEls.forEach(el => io.observe(el));
+
+  /* ── HELPERS ── */
+  function formatCount(n) {
+    if (!n) return '—';
+    n = parseInt(n);
+    if (n >= 1e9) return (n/1e9).toFixed(1)+'B';
+    if (n >= 1e6) return (n/1e6).toFixed(1)+'M';
+    if (n >= 1e3) return (n/1e3).toFixed(1)+'K';
+    return n.toString();
+  }
+
+  function timeAgo(dateStr) {
+    const d = new Date(dateStr);
+    const diff = (Date.now() - d) / 1000;
+    if (diff < 60)       return 'just now';
+    if (diff < 3600)     return Math.floor(diff/60) + ' min ago';
+    if (diff < 86400)    return Math.floor(diff/3600) + ' hrs ago';
+    if (diff < 2592000)  return Math.floor(diff/86400) + ' days ago';
+    if (diff < 31536000) return Math.floor(diff/2592000) + ' months ago';
+    return Math.floor(diff/31536000) + ' years ago';
+  }
+
+  function thumbUrl(id, quality='mqdefault') {
+    return `https://img.youtube.com/vi/${id}/${quality}.jpg`;
+  }
+
+  function parseDuration(iso) {
+    const m = iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+    if (!m) return 999;
+    return ((+m[1]||0)*3600 + (+m[2]||0)*60 + (+m[3]||0));
+  }
+
+  /* ── RENDER VIDEOS ── */
+  function renderVideos(items) {
+    const grid = document.getElementById('video-grid');
+    if (!items.length) {
+      grid.innerHTML = '<div class="error-msg">Koi video nahi mila.</div>';
+      return;
+    }
+    grid.innerHTML = items.map(item => {
+      const id    = item.snippet?.resourceId?.videoId;
+      const title = item.snippet.title;
+      const date  = item.snippet.publishedAt;
+      const url   = `https://www.youtube.com/watch?v=${id}`;
+      return `
+        <a href="${url}" target="_blank" class="video-card">
+          <div class="thumb-wrap">
+            <img src="${thumbUrl(id,'hqdefault')}" alt="${title}" loading="lazy"
+                 onerror="this.src='${thumbUrl(id,'mqdefault')}'"/>
+            <div class="play-overlay">
+              <div class="play-btn">
+                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="video-info">
+            <div class="video-title">${title}</div>
+            <div class="video-meta">${timeAgo(date)}</div>
+          </div>
+        </a>`;
+    }).join('');
+  }
+
+  /* ── RENDER SHORTS ── */
+  function renderShorts(items) {
+    const grid = document.getElementById('shorts-grid');
+    if (!items.length) {
+      grid.innerHTML = '<div class="error-msg">Koi short nahi mila.</div>';
+      return;
+    }
+    grid.innerHTML = items.map(item => {
+      const id    = item.snippet?.resourceId?.videoId;
+      const title = item.snippet.title;
+      const url   = `https://www.youtube.com/shorts/${id}`;
+      return `
+        <a href="${url}" target="_blank" class="short-card">
+          <div class="short-thumb-wrap">
+            <img src="${thumbUrl(id)}" alt="${title}" loading="lazy"
+                 onerror="this.src='https://img.youtube.com/vi/${id}/default.jpg'"/>
+            <div class="shorts-badge">SHORTS</div>
+          </div>
+          <div class="short-title">${title}</div>
+        </a>`;
+    }).join('');
+  }
+
+  /* ══════════════════════════════════════════
+     MAIN FETCH
+     ══════════════════════════════════════════ */
+  async function fetchAllContent() {
+    try {
+      /* 1. Channel stats + uploads playlist */
+      const chanRes  = await fetch(
+        `https://www.googleapis.com/youtube/v3/channels?part=statistics,contentDetails&id=${CHANNEL_ID}&key=${YT_API_KEY}`
+      );
+      const chanData = await chanRes.json();
+
+      if (!chanData.items || !chanData.items.length) {
+        throw new Error('Channel nahi mila. API key ya Channel ID check karo.');
+      }
+
+      const stats = chanData.items[0].statistics;
+      document.getElementById('stat-subs').textContent   = formatCount(stats.subscriberCount);
+      document.getElementById('stat-views').textContent  = formatCount(stats.viewCount);
+      document.getElementById('stat-videos').textContent = formatCount(stats.videoCount);
+
+      const uploadsId = chanData.items[0].contentDetails.relatedPlaylists.uploads;
+      if (!uploadsId) throw new Error('Uploads playlist ID nahi mila.');
+
+      /* 2. Saare playlist items fetch karo */
+      let allItems  = [];
+      let pageToken = '';
+      do {
+        const url  = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${uploadsId}&key=${YT_API_KEY}${pageToken ? '&pageToken='+pageToken : ''}`;
+        const res  = await fetch(url);
+        const data = await res.json();
+        if (data.error) throw new Error(data.error.message);
+        allItems  = allItems.concat(data.items || []);
+        pageToken = data.nextPageToken || '';
+      } while (pageToken);
+
+      /* 3. Har video ki contentDetails fetch karo (duration + tags) */
+      const ids = allItems.map(i => i.snippet?.resourceId?.videoId).filter(Boolean);
+      const videoDetails = {};
+      for (let i = 0; i < ids.length; i += 50) {
+        const batch = ids.slice(i, i + 50).join(',');
+        const r = await fetch(
+          `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${batch}&key=${YT_API_KEY}`
+        );
+        const d = await r.json();
+        (d.items || []).forEach(v => { videoDetails[v.id] = v; });
+      }
+
+      /* 4. Shorts vs Long videos — Smart Detection
+         YouTube Shorts criteria:
+         - Duration <= 180 seconds (3 minutes max as per YouTube rules)
+         - Title contains #Shorts OR title contains "#short" (case-insensitive)
+         - OR duration is <= 60 seconds (definitely a short)
+         We combine duration check with title check for best accuracy.
+      */
+      const shorts = [], videos = [];
+      allItems.forEach(item => {
+        const id    = item.snippet?.resourceId?.videoId;
+        if (!id) return;
+        const title = (item.snippet.title || '').toLowerCase();
+        const dur   = videoDetails[id]
+          ? parseDuration(videoDetails[id].contentDetails.duration)
+          : 999;
+
+        const hasShortTag  = title.includes('#short');
+        const isShortDur   = dur <= 180;
+
+        if (isShortDur && hasShortTag) {
+          shorts.push(item);
+        } else if (isShortDur && dur <= 60) {
+          // Very short videos without tag — likely shorts
+          shorts.push(item);
+        } else {
+          videos.push(item);
+        }
+      });
+
+      renderVideos(videos);
+      renderShorts(shorts);
+
+      /* Naye cards ko visible karo */
+      document.querySelectorAll('.reveal:not(.visible)').forEach(el => el.classList.add('visible'));
+
+    } catch (err) {
+      document.getElementById('video-grid').innerHTML =
+        `<div class="error-msg">⚠️ Error: ${err.message}</div>`;
+      document.getElementById('shorts-grid').innerHTML = '';
+      console.error(err);
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', fetchAllContent);
+</script>
+</body>
+</html>
